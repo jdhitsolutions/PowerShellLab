@@ -12,10 +12,20 @@
     {
         "DistinguishedName":  "CN=ArtD,OU=IT,DC=Company,DC=Pri",
         "Name":  "ArtD",
-        "SamAccountName":  "Art D",
+        "SamAccountName":  "ArtD",
         "GivenName":  "Art",
         "Surname":  "Deco",
         "DisplayName":  "Art Deco",
+        "Description":  "PowerShell Guru",
+        "Department":  "IT"
+    },
+    {
+        "DistinguishedName":  "CN=AprilS,OU=IT,DC=Company,DC=Pri",
+        "Name":  "AprilS",
+        "SamAccountName":  "AprilS",
+        "GivenName":  "April",
+        "Surname":  "Showers",
+        "DisplayName":  "April Showers",
         "Description":  "PowerShell Guru",
         "Department":  "IT"
     },

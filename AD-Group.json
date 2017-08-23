@@ -6,7 +6,9 @@
         "GroupScope":  "Global",
         "Members":  [
                         "MikeS",
-                        "MaryL"
+                        "MaryL",
+                        "ArtD",
+                        "AprilS"
                     ]
     },
     {
@@ -59,6 +61,7 @@
         "GroupScope":  "Global",
         "Members":  [
                         "ArtD",
+                        "AprilS"
                         "Administrator"
                     ]
     }
