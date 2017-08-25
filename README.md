@@ -27,5 +27,6 @@ All servers run an evaluation version of Windows Server 2016 Core:
 ## Notes
 - All computers are set for Mountain Time with a location of Phoenix, Arizona.
 - It is strongly recommended that you run Windows update on the virtual machines, especially the Windows 10 client.
+- The PostSetup folder contains a number of optional scripts you might want to run after the Autolab setup is complete.
 
-*Last updated August 24, 2017*
+*Last updated August 25, 2017*
