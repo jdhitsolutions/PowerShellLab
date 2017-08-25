@@ -24,14 +24,15 @@ $credential = New-Object -typename Pscredential -ArgumentList Administrator, $se
 
 #region DSC Resources
     Import-DSCresource -ModuleName PSDesiredStateConfiguration,
-        @{ModuleName="xPSDesiredStateConfiguration";ModuleVersion="5.0.0.0"},
-        @{ModuleName="xActiveDirectory";ModuleVersion="2.14.0.0"},
-        @{ModuleName="xComputerManagement";ModuleVersion="1.8.0.0"},
+        @{ModuleName="xPSDesiredStateConfiguration";ModuleVersion="6.4.0.0"},
+        @{ModuleName="xActiveDirectory";ModuleVersion="2.16.0.0"},
+        @{ModuleName="xComputerManagement";ModuleVersion="2.0.0.0"},
         @{ModuleName="xNetworking";ModuleVersion="3.0.0.0"},
         @{ModuleName="xDhcpServer";ModuleVersion="1.5.0.0"},
-        @{ModuleName='xWindowsUpdate';ModuleVersion = '2.5.0.0'},
+        @{ModuleName='xWindowsUpdate';ModuleVersion = '2.7.0.0'},
         @{ModuleName='xPendingReboot';ModuleVersion = '0.3.0.0'},
-        @{ModuleName='xADCSDeployment';ModuleVersion = '1.0.0.0'}
+        @{ModuleName='xADCSDeployment';ModuleVersion = '1.1.0.0'},
+        @{ModuleName='xDnsServer';ModuleVersion = '1.7.0.0'}
 
 #endregion
 #region All Nodes
@@ -53,7 +54,7 @@ $credential = New-Object -typename Pscredential -ArgumentList Administrator, $se
         xIPAddress 'PrimaryIPAddress' {
             IPAddress      = $node.IPAddress
             InterfaceAlias = $node.InterfaceAlias
-            PrefixLength     = $node.SubnetMask
+            PrefixLength    = $node.SubnetMask
             AddressFamily  = $node.AddressFamily
         }
 
@@ -220,6 +221,26 @@ $credential = New-Object -typename Pscredential -ArgumentList Administrator, $se
                 Ensure = 'Present'
                 }
 
+#region DNS
+            #add a DNS entry for the workgroup server
+                xDnsRecord SRV3 {
+                    Name = "srv3"
+                    Target = "192.168.3.60"
+                    Type = 'ARecord'
+                    Zone = "company.pri"
+                    Ensure = 'present'
+                    DependsOn = '[xADDomain]FirstDC'
+                }
+            
+                #Add reverse lookup zone
+                xDNSServerPrimaryZone Reverse {
+                    Name = "3.168.192.in-addr.arpa"
+                    Ensure = "present"
+                    DynamicUpdate = "NonsecureAndSecure"
+                    DependsOn = '[xADDomain]FirstDC'
+
+                }
+ #endregion
     } #end nodes DC
 
 #endregion 
@@ -322,6 +343,12 @@ $credential = New-Object -typename Pscredential -ArgumentList Administrator, $se
             DependsOn = '[xHotFix]RSAT'
         }
 
+        #since RSAT is added to the client go ahead and create a Scripts folder
+        File scripts {
+            DestinationPath = 'C:\Scripts'
+            Ensure = 'present'
+            type = 'directory'
+        }
         
     }#end RSAT Config
 

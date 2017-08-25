@@ -3,9 +3,9 @@
 This lab builds the following:
 
 * 1 DC with users, groups and OU's - GUI
-* 1 DHCP server on the DC
-* 2 Domain joined servers (s1 and s2)
-* 1 workgroup based server (s3)
+* 1 DHCP server on the DOM1
+* 2 Domain joined servers (SRV1 and SRV2)
+* 1 workgroup based server (SRV3)
 * 1 Domain joined Windows 10 Client with RSAT tools installed
 
 ## To get started:
@@ -18,7 +18,7 @@ This lab builds the following:
     Run the following for initial setup:
     PS> Setup-Lab
 
-    To start the LAb, and apply configurations the first time:
+    To start the Lab, and apply configurations the first time:
     PS> Run-Lab
 
     To enable Internet access for the VM's, run:

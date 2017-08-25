@@ -35,9 +35,13 @@ demonstrations and would need to be modified for your environment.
 
             # Firewall settings to enable
             FirewallRuleNames = @(
-                'FPS-ICMP4-ERQ-In';
-                'FPS-ICMP6-ERQ-In';
-                'FPS-SMB-In-TCP'
+                'FPS-ICMP4-ERQ-In',
+                'FPS-ICMP6-ERQ-In',
+                'FPS-SMB-In-TCP',
+                'WMI-WINMGMT-In-TCP-NoScope',
+                'WMI-WINMGMT-Out-TCP-NoScope',
+                'WMI-WINMGMT-In-TCP',
+                'WMI-WINMGMT-Out-TCP'
             )
                        
             # Domain and Domain Controller information
@@ -100,10 +104,10 @@ demonstrations and would need to be modified for your environment.
         Web = Basic web server
         RSAT = Remote Server Administration Tools for the client
         RDP = enables RDP and opens up required firewall rules
-        DomainJoin = joions a computer to the domain
+        DomainJoin = joins a computer to the domain
 #>
         @{
-            NodeName = 'DC'
+            NodeName = 'DOM1'
             IPAddress = '192.168.3.10'
             Role = @('DC', 'DHCP', 'ADCS') 
             Lability_BootOrder = 10
@@ -117,7 +121,7 @@ demonstrations and would need to be modified for your environment.
                     Set-Item -path wsman:\localhost\maxenvelopesize -value 1000       
 '@
         }
-
+        
         @{
             NodeName = 'SRV1'
             IPAddress = '192.168.3.50'
@@ -149,7 +153,7 @@ demonstrations and would need to be modified for your environment.
         }
 
         @{
-            NodeName = 'Cli1'
+            NodeName = 'WIN10'
             IPAddress = '192.168.3.100'
             Role = @('domainJoin', 'RSAT', 'RDP')
             Lability_ProcessorCount = 2
@@ -174,14 +178,15 @@ demonstrations and would need to be modified for your environment.
             );
             DSCResource = @(
                 ## Download published version from the PowerShell Gallery or Github
-                @{ Name = 'xActiveDirectory'; RequiredVersion="2.14.0.0"; Provider = 'PSGallery'; },
-                @{ Name = 'xComputerManagement'; RequiredVersion = '1.8.0.0'; Provider = 'PSGallery'; },
+                @{ Name = 'xActiveDirectory'; RequiredVersion="2.16.0.0"; Provider = 'PSGallery'; },
+                @{ Name = 'xComputerManagement'; RequiredVersion = '2.0.0.0'; Provider = 'PSGallery'; },
                 @{ Name = 'xNetworking'; RequiredVersion = '3.0.0.0'; Provider = 'PSGallery'; },
                 @{ Name = 'xDhcpServer'; RequiredVersion = '1.5.0.0'; Provider = 'PSGallery';  },
-                @{ Name = 'xWindowsUpdate' ; RequiredVersion = '2.5.0.0'; Provider = 'PSGallery';},
+                @{ Name = 'xWindowsUpdate' ; RequiredVersion = '2.7.0.0'; Provider = 'PSGallery';},
                 @{ Name = 'xPSDesiredStateConfiguration'; RequiredVersion = '5.0.0.0'; },
-                @{ Name = 'xPendingReboot'; RequiredVersion = '0.3.0.0'; },
-		        @{ Name = 'xADCSDeployment'; RequiredVersion = '1.0.0.0'; }
+                @{ Name = 'xPendingReboot'; RequiredVersion = '0.3.0.0'; Provider = 'PSGallery';},
+                @{ Name = 'xADCSDeployment'; RequiredVersion = '1.1.0.0'; Provider = 'PSGallery';},
+                @{ Name = 'xDnsServer';RequiredVersion = "1.7.0.0";Provider = 'PSGallery';}        
 
             );
             Resource = @(

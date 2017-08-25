@@ -3,7 +3,7 @@
 #test if VM setup is complete
 
 
-#The password will be passed by the control script WaitforVM.pSRV2
+#The password will be passed by the control script WaitforVM.ps1
 #You can manually set it while developing this Pester test
 $LabData = Import-PowerShellDataFile -Path .\*.psd1
 $Secure = ConvertTo-SecureString -String "$($labdata.allnodes.labpassword)" -AsPlainText -Force 
@@ -11,15 +11,15 @@ $Domain = "company"
 $cred = New-Object PSCredential "Company\Administrator",$Secure
 $wgcred = New-Object PSCredential  "SRV3\administrator",$secure
 
-Describe DC1 {
+Describe DOM1 {
 
-$dc = New-PSSession -VMName DC -Credential $cred -ErrorAction SilentlyContinue
+$dc = New-PSSession -VMName DOM1 -Credential $cred -ErrorAction SilentlyContinue
 #set error action preference to suppress all error messsages
 if ($dc) {
     Invoke-Command { $errorActionPreference = 'silentlyContinue'} -session $dc
 }
 
-It "[DC1] Should accept domain admin credential" {
+It "[DOM1] Should accept domain admin credential" {
     $dc.Count | Should Be 1
 }
 
@@ -28,17 +28,17 @@ $feat = Invoke-Command { Get-WindowsFeature | Where installed} -session $dc
 $needed = 'AD-Domain-Services','DNS','RSAT-AD-Tools',
 'RSAT-AD-PowerShell'
 foreach ($item in $needed) {
-    It "[DC1] Should have feature $item installed" {
+    It "[DOM1] Should have feature $item installed" {
         $feat.Name -contains $item | Should Be "True"
     }
 }
 
-It "[DC1] Should have an IP address of 192.168.3.10" {
+It "[DOM1] Should have an IP address of 192.168.3.10" {
     $i = Invoke-command -ScriptBlock { Get-NetIPAddress -interfacealias 'Ethernet' -AddressFamily IPv4} -Session $dc
     $i.ipv4Address | should be '192.168.3.10'
 }
 
-It "[DC1] Should have a domain name of $domain" {
+It "[DOM1] Should have a domain name of $domain" {
     $r = Invoke-command { Get-ADDomain -ErrorAction SilentlyContinue } -session $dc
     $r.name | should Be $domain
 }
@@ -46,39 +46,53 @@ It "[DC1] Should have a domain name of $domain" {
 $OUs = Invoke-command { Get-ADorganizationalUnit -filter * -ErrorAction SilentlyContinue} -session $dc
 $needed = 'IT','Dev','Marketing','Sales','Accounting','JEA_Operators','Servers'
 foreach ($item in $needed) {
-    It "[DC1] Should have organizational unit $item" {
+    It "[DOM1] Should have organizational unit $item" {
     $OUs.name -contains $item | Should Be "True"
     }
 }
-$groups = Invoke-Command { Get-ADGroup -filter * -ErrorAction SilentlyContinue} -session $DC
+$groups = Invoke-Command { Get-ADGroup -filter * -ErrorAction SilentlyContinue} -session $dc
 $target = "IT","Sales","Marketing","Accounting","JEA Operators"
 foreach ($item in $target) {
 
- It "[DC1] Should have a group called $item" {
+ It "[DOM1] Should have a group called $item" {
     $groups.Name -contains $item | Should Be "True"
  }
 
 }
 
 $users= Invoke-Command { Get-AdUser -filter * -ErrorAction SilentlyContinue} -session $dc
-It "[DC1] Should have at least 15 user accounts" {
+It "[DOM1] Should have at least 15 user accounts" {
     $users.count | should BeGreaterThan 15
 }
 
+$admins = Invoke-Command {Get-ADGroupMember "Domain Admins"-ErrorAction SilentlyContinue} -session $dc
+It "[DOM1] ArtD is a member of Domain Admins" {
+    $admins.name -contains 'artd'
+}
+
+It "[DOM1] AprilS is a member of Domain Admins" {
+    $admins.name -contains 'aprils'
+}
+
 $computer = Invoke-Command { Get-ADComputer -filter * -ErrorAction SilentlyContinue} -session $dc
-It "[DC1] Should have a computer account for Client" {
-    $computer.name -contains "cli1" | Should Be "True"
+It "[DOM1] Should have a computer account for WIN10" {
+    $computer.name -contains "Win10" | Should Be "True"
 } 
 
-It "[DC1] Should have a computer account for SRV1" {
+It "[DOM1] Should have a computer account for SRV1" {
     $computer.name -contains "SRV1" | Should Be "True"
 } 
 
-It "[DC1] Should have a computer account for SRV2" {
+It "[DOM1] Should have a computer account for SRV2" {
     $computer.name -contains "SRV2" | Should Be "True"
 } 
 
-} #DC
+$rec = Invoke-command {Resolve-DNSName Srv3.company.pri} -session $DC
+It "[DOM1] Should have a DNS record for SRV3.COMPANY.PRI" {
+   $rec.name | Should be 'srv3.company.pri'
+   $rec.ipaddress | Should be '192.168.3.60'
+}
+} #DOM1
 
 Describe SRV1 {
     $SRV1 = New-PSSession -VMName SRV1 -Credential $cred -ErrorAction SilentlyContinue
@@ -133,21 +147,21 @@ It "[SRV3] Should belong to the Workgroup domain" {
 }
 #>
 
-Describe Cli1 {
+Describe Win10 {
 
-$cl = New-PSSession -VMName cli1 -Credential $cred -ErrorAction SilentlyContinue
-It "[CLI] Should accept domain admin credential" {
-    $cl = New-PSSession -VMName cli1 -Credential $cred -ErrorAction SilentlyContinue
+$cl = New-PSSession -VMName Win10 -Credential $cred -ErrorAction SilentlyContinue
+It "[Win10] Should accept domain admin credential" {
+    
     $cl.Count | Should Be 1
 }
 
-It "[CLI] Should have an IP address of 192.168.3.100" {
+It "[Win10] Should have an IP address of 192.168.3.100" {
     $i = Invoke-command -ScriptBlock { Get-NetIPAddress -interfacealias 'Ethernet' -AddressFamily IPv4} -session $cl
     $i.ipv4Address | should be '192.168.3.100'
 }
 
 $dns = Invoke-Command {Get-DnsClientServerAddress -InterfaceAlias ethernet -AddressFamily IPv4} -session $cl
-It "[CLI] Should have a DNS server configuration of 192.168.3.10" {                        
+It "[Win10] Should have a DNS server configuration of 192.168.3.10" {                        
   $dns.ServerAddresses -contains '192.168.3.10' | Should Be "True"           
 }
 
