@@ -9,15 +9,17 @@ To use the scripts and configurations, download the [current release ](https://g
 Domain name: Company.pri
 Password for all accounts is: `P@ssw0rd`
 
+You most likely will want to use one or more of these accounts.
 The user Art Deco (ArtD) is a member of the Domain Admins group.
 The user April Showers (AprilS) is a member of the Domain Admins group.
+The user Mike Smith (MikeS) is a standard, non-domain admin, user.
 
 ## Servers
 All servers run an evaluation version of Windows Server 2016 Core:
 
 - DOM1 Domain Controller
-- SRV1 Member server
-- SRV2 Member server
+- SRV1 Domain Member server
+- SRV2 Domain Member server
 - SRV3 Workgroup server
 
 ## Desktops
@@ -29,4 +31,4 @@ All servers run an evaluation version of Windows Server 2016 Core:
 - It is strongly recommended that you run Windows update on the virtual machines, especially the Windows 10 client.
 - The PostSetup folder contains a number of optional scripts you might want to run after the Autolab setup is complete.
 
-*Last updated August 25, 2017*
+*Last updated August 26, 2017*

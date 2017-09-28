@@ -9,7 +9,7 @@ Param(
     [pscredential]$Credential,
     [Parameter(Mandatory,ParameterSetName="session")]
     #specify an existing PSSession object
-    [System.Management.Automation.Runspaces.PSSession]$Session    
+    [System.Management.Automation.Runspaces.PSSession[]]$Session    
 )
 
 Try {
@@ -25,10 +25,10 @@ Try {
         $path = "C:\"
 
         #get the web page
-        $page = Invoke-WebRequest -Uri $uri -UseBasicParsing 
+        $page = Invoke-WebRequest -Uri $uri -UseBasicParsing -DisableKeepAlive
 
         #get the download link
-        $dl = ($page.links | where outerhtml -match 'git-.*-64-bit.exe' | select -first 1 * ).href
+        $dl = ($page.links | where-object outerhtml -match 'git-.*-64-bit.exe' | Select-Object -first 1 * ).href
 
         #split out the filename
         $filename = split-path $dl -leaf
@@ -37,7 +37,7 @@ Try {
         $out = Join-Path -Path $path -ChildPath $filename
 
         #download the file
-        Invoke-WebRequest -uri $dl -OutFile $out -UseBasicParsing
+        Invoke-WebRequest -uri $dl -OutFile $out -UseBasicParsing -DisableKeepAlive
 
         #check it out
         Get-item $out

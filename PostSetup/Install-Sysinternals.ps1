@@ -22,7 +22,7 @@ Param(
     [pscredential]$Credential,
     [Parameter(Mandatory,ParameterSetName="session")]
     #specify an existing PSSession object
-    [System.Management.Automation.Runspaces.PSSession]$Session    
+    [System.Management.Automation.Runspaces.PSSession[]]$Session    
 )
 
 Try {
@@ -36,7 +36,6 @@ Try {
         if (-Not (Test-Path $Destination)) {
             new-Item -Path $Destination -ItemType Directory
         }
-
 
         #start the WebClient service if it is not running
         if ((Get-Service WebClient).Status -eq 'Stopped') {
@@ -73,7 +72,7 @@ Try {
         Write-Host "Sysinternals Update Complete" -ForegroundColor Cyan
         }
 
-        Invoke-Command -ScriptBlock $sb -Session $session
+       Invoke-Command -ScriptBlock $sb -Session $session
 
        if ($PSCmdlet.ParameterSetName -eq 'VM') {
             Write-Host "Removing PSSession" -ForegroundColor cyan
