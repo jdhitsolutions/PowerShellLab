@@ -32,7 +32,8 @@ $credential = New-Object -typename Pscredential -ArgumentList Administrator, $se
         @{ModuleName='xWindowsUpdate';ModuleVersion = '2.7.0.0'},
         @{ModuleName='xPendingReboot';ModuleVersion = '0.3.0.0'},
         @{ModuleName='xADCSDeployment';ModuleVersion = '1.1.0.0'},
-        @{ModuleName='xDnsServer';ModuleVersion = '1.7.0.0'}
+        @{ModuleName='xDnsServer';ModuleVersion = '1.7.0.0'},
+        @{ModuleName='xWebAdministration';ModuleVersion = '1.15.0.0'}
 
 #endregion
 #region All Nodes
@@ -298,8 +299,55 @@ $credential = New-Object -typename Pscredential -ArgumentList Administrator, $se
             WindowsFeature $feature.Replace('-','') {
                 Ensure = 'Present'
                 Name = $feature
-                IncludeAllSubFeature = $False
+                IncludeAllSubFeature = $True
             }
+        }
+        
+        File SampleService {
+            Ensure = 'Present'
+            Type = 'Directory'
+            DestinationPath = 'C:\MyWebServices'
+        }
+
+$asmx = @"
+<%@ WebService language = "C#" class = "FirstService" %>
+
+using System;
+using System.Web.Services;
+using System.Xml.Serialization;
+
+[WebService(Namespace="http://localhost/MyWebServices/")]
+public class FirstService : WebService
+{
+   [WebMethod]
+   public int Add(int a, int b)
+   {
+      return a + b;
+   }
+
+   [WebMethod]
+   public String SayHello()
+   {
+   return "Hello World. It is a wonderful day for learning PowerShell.";
+
+   }
+
+}
+"@
+        File SampleServiceASMX {
+            Ensure = 'Present'
+            Type = 'File'
+            DependsOn = "[File]SampleService"
+            DestinationPath = "c:\MyWebServices\firstservice.asmx"
+            Contents = $asmx
+            Force = $True
+        }
+        xWebApplication SampleWebService {
+            DependsOn = "[File]SampleServiceASMX"
+            Website = 'default web site'
+            PhysicalPath = 'c:\MyWebServices'
+            Name = 'MyWebServices'
+            WebAppPool = 'DefaultAppPool'
         }
         
     }#end Web Config
