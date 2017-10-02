@@ -3,16 +3,16 @@
 These files are used for configuration with the [Autolab](https://github.com/theJasonHelmick/PS-AutoLab-Env) project. The intent is to setup a small domain environment for testing and teaching Windows PowerShell 5.1. 
 
 ## Instructions
-To use the scripts and configurations, download the [current release ](https://github.com/jdhitsolutions/PowerShellLab/archive/0.9.1.zip). Extract the contents of the zip file folder to your Autolab Configurations directory. You should end up with something like C:\Autolab\Configurations\PowerShellLab which contains the files from this repository. Change to that directory and continue with the Autolab setup instructions.
+To use the scripts and configurations, download the [current release ](https://github.com/jdhitsolutions/PowerShellLab/archive/0.9.2.zip). Extract the contents of the zip file folder to your Autolab Configurations directory. You should end up with something like C:\Autolab\Configurations\PowerShellLab which contains the files from this repository. Change to that directory and continue with the Autolab setup instructions.
 
 ## Domain Setup
 Domain name: Company.pri
 Password for all accounts is: `P@ssw0rd`
 
 You most likely will want to use one or more of these accounts.
-The user Art Deco (ArtD) is a member of the Domain Admins group.
-The user April Showers (AprilS) is a member of the Domain Admins group.
-The user Mike Smith (MikeS) is a standard, non-domain admin, user.
+- The user Art Deco (ArtD) is a member of the Domain Admins group.
+- The user April Showers (AprilS) is a member of the Domain Admins group.
+- The user Mike Smith (MikeS) is a standard, non-domain admin, user.
 
 ## Servers
 All servers run an evaluation version of Windows Server 2016 Core:
