@@ -1,4 +1,4 @@
 *.mof
 *.mof.error
 *.bak
-*git*
+.gitignore
