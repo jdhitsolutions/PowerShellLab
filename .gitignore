@@ -1,3 +1,4 @@
 *.mof
 *.mof.error
 *.bak
+*git*
