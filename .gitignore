@@ -2,3 +2,10 @@
 *.mof.error
 *.bak
 .gitignore
+thumbs.db
+Desktop.ini
+*.cab
+*.zip
+*.msi
+*.log
+
