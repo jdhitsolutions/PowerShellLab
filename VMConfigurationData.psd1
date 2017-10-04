@@ -180,7 +180,7 @@ demonstrations and would need to be modified for your environment.
                 ## Download published version from the PowerShell Gallery or Github
                 @{ Name = 'xActiveDirectory'; RequiredVersion="2.16.0.0"; Provider = 'PSGallery'; },
                 @{ Name = 'xComputerManagement'; RequiredVersion = '2.0.0.0'; Provider = 'PSGallery'; },
-                @{ Name = 'xNetworking'; RequiredVersion = '3.0.0.0'; Provider = 'PSGallery'; },
+                @{ Name = 'xNetworking'; RequiredVersion = '3.2.0.0'; Provider = 'PSGallery'; },
                 @{ Name = 'xDhcpServer'; RequiredVersion = '1.5.0.0'; Provider = 'PSGallery';  },
                 @{ Name = 'xWindowsUpdate' ; RequiredVersion = '2.7.0.0'; Provider = 'PSGallery';},
                 @{ Name = 'xPSDesiredStateConfiguration'; RequiredVersion = '6.4.0.0'; },

@@ -27,7 +27,7 @@ $credential = New-Object -typename Pscredential -ArgumentList Administrator, $se
         @{ModuleName="xPSDesiredStateConfiguration";ModuleVersion="6.4.0.0"},
         @{ModuleName="xActiveDirectory";ModuleVersion="2.16.0.0"},
         @{ModuleName="xComputerManagement";ModuleVersion="2.0.0.0"},
-        @{ModuleName="xNetworking";ModuleVersion="3.0.0.0"},
+        @{ModuleName="xNetworking";ModuleVersion="3.2.0.0"},
         @{ModuleName="xDhcpServer";ModuleVersion="1.5.0.0"},
         @{ModuleName='xWindowsUpdate';ModuleVersion = '2.7.0.0'},
         @{ModuleName='xPendingReboot';ModuleVersion = '0.3.0.0'},
