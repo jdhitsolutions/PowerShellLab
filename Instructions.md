@@ -10,35 +10,68 @@ This lab builds the following:
 
 ## To get started:
 
-    To run the full lab setup, which includes Setup-Lab, Run-Lab, Enable-Internet, and Validate-Lab:
-    PS> Unattend-Lab
-    
-    To run the commands individually to setup the lab environment:
+To run the full lab setup, which includes Setup-Lab, Run-Lab, Enable-Internet, and Validate-Lab. You should run all commands from the directory with the MOF and psd1 files.
 
-    Run the following for initial setup:
-    PS> Setup-Lab
+```powershell
+PS> Unattend-Lab -ignorePendingReboot
+```
 
-    To start the Lab, and apply configurations the first time:
-    PS> Run-Lab
+To run the commands individually to setup the lab environment:
 
-    To enable Internet access for the VM's, run:
-    PS> Enable-Internet
+Run the following for initial setup:
 
-    To validate when configurations have converged:
-    PS> Validate-Lab
-   
+```powershell
+PS> Setup-Lab -ignorePendingReboot
+```
+
+To start the Lab, and apply configurations the first time:
+
+```powershell
+PS> Run-Lab
+```
+
+To enable Internet access for the VM's, run:
+
+```powershell
+PS> Enable-Internet
+```
+
+To validate when configurations have converged:
+
+```powrshell
+PS> Validate-Lab
+```
+
+Or you can run the Pester test directly
+
+```powershell
+PS> Invoke-Pester vmvalidate.test.ps1
+```
+
 ## To Stop and snapshot the lab
 
-    To stop the lab VM's:
-    PS> Shutdown-lab
+To stop the lab VM's:
 
-    To checkpoint the VM's:
-    PS> Snapshot-Lab
+```powershell
+PS> Shutdown-lab
+```
 
-    To quickly rebuild the labs from the checkpoint, run:
-    PS> Refresh-Lab
+To checkpoint the VM's:
+
+```powershell
+PS> Snapshot-Lab
+```
+
+To quickly rebuild the labs from the checkpoint, run:
+
+```powershell
+PS> Refresh-Lab
+```
 
 ## To remove a lab
-    
-    To destroy the lab to build again:
-    PS> Wipe-Lab
+
+To destroy the lab to build again:
+
+```powershell
+PS> Wipe-Lab
+```

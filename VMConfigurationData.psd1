@@ -1,20 +1,18 @@
 <# Notes:
 
-Authors: Jason Helmick and Melissa (Missy) Januszko
+Authors: Jason Helmick, Melissa (Missy) Januszko, and Jeff Hicks
 
 The bulk of this DC, DHCP, ADCS config is authored by Melissa (Missy) Januszko and Jason Helmick.
 Currently on her public DSC hub located here: https://github.com/majst32/DSC_public.git
 
-Additional contributors of note: Jeff Hicks
 
-       
 Disclaimer
 
 This example code is provided without copyright and AS IS.  It is free for you to use and modify.
-Note: These demos should not be run as a script. These are the commands that I use in the 
+Note: These demos should not be run as a script. These are the commands that I use in the
 demonstrations and would need to be modified for your environment.
 
-#> 
+#>
 
 @{
     AllNodes = @(
@@ -23,7 +21,7 @@ demonstrations and would need to be modified for your environment.
 
             # Lab Password - assigned to Administrator and Users
             LabPassword = 'P@ssw0rd'
-            
+
             # Common networking
             InterfaceAlias = 'Ethernet'
             DefaultGateway = '192.168.3.1'
@@ -43,7 +41,7 @@ demonstrations and would need to be modified for your environment.
                 'WMI-WINMGMT-In-TCP',
                 'WMI-WINMGMT-Out-TCP'
             )
-                       
+
             # Domain and Domain Controller information
             DomainName = "Company.Pri"
             DomainDN = "DC=Company,DC=Pri"
@@ -51,8 +49,8 @@ demonstrations and would need to be modified for your environment.
             DCLogPath = "C:\NTDS"
             SysvolPath = "C:\Sysvol"
             PSDscAllowPlainTextPassword = $true
-            PSDscAllowDomainUser = $true 
-                        
+            PSDscAllowDomainUser = $true
+
             # DHCP Server Data
             DHCPName = 'LabNet'
             DHCPIPStartRange = '192.168.3.200'
@@ -109,7 +107,7 @@ demonstrations and would need to be modified for your environment.
         @{
             NodeName = 'DOM1'
             IPAddress = '192.168.3.10'
-            Role = @('DC', 'DHCP', 'ADCS') 
+            Role = @('DC', 'DHCP', 'ADCS')
             Lability_BootOrder = 10
             Lability_BootDelay = 60 # Number of seconds to delay before others
             Lability_timeZone = 'US Mountain Standard Time' #[System.TimeZoneInfo]::GetSystemTimeZones()
@@ -118,10 +116,10 @@ demonstrations and would need to be modified for your environment.
             Lability_ProcessorCount = 2
             CustomBootStrap = @'
                     # This must be set to handle larger .mof files
-                    Set-Item -path wsman:\localhost\maxenvelopesize -value 1000       
+                    Set-Item -path wsman:\localhost\maxenvelopesize -value 1000
 '@
         }
-        
+
         @{
             NodeName = 'SRV1'
             IPAddress = '192.168.3.50'
@@ -168,34 +166,34 @@ demonstrations and would need to be modified for your environment.
 '@
         }
 #>
-        
+
     );
     NonNodeData = @{
         Lability = @{
-            # EnvironmentPrefix = 'PS-GUI-' # this will prefix the VM names                                    
+            # EnvironmentPrefix = 'PS-GUI-' # this will prefix the VM names
             Network = @( # Virtual switch in Hyper-V
                 @{ Name = 'LabNet'; Type = 'Internal'; NetAdapterName = 'Ethernet'; AllowManagementOS = $true;}
             );
             DSCResource = @(
                 ## Download published version from the PowerShell Gallery or Github
-                @{ Name = 'xActiveDirectory'; RequiredVersion="2.16.0.0"; Provider = 'PSGallery'; },
-                @{ Name = 'xComputerManagement'; RequiredVersion = '2.0.0.0'; Provider = 'PSGallery'; },
-                @{ Name = 'xNetworking'; RequiredVersion = '3.2.0.0'; Provider = 'PSGallery'; },
-                @{ Name = 'xDhcpServer'; RequiredVersion = '1.5.0.0'; Provider = 'PSGallery';  },
-                @{ Name = 'xWindowsUpdate' ; RequiredVersion = '2.7.0.0'; Provider = 'PSGallery';},
-                @{ Name = 'xPSDesiredStateConfiguration'; RequiredVersion = '6.4.0.0'; },
-                @{ Name = 'xPendingReboot'; RequiredVersion = '0.3.0.0'; Provider = 'PSGallery';},
-                @{ Name = 'xADCSDeployment'; RequiredVersion = '1.1.0.0'; Provider = 'PSGallery';},
-                @{ Name = 'xDnsServer';RequiredVersion = "1.7.0.0";Provider = 'PSGallery';},
-                @{ Name = 'xWebAdministration';RequiredVersion = '1.15.0.0';Provider = 'PSGallery'}        
+                @{ Name = 'xActiveDirectory'; RequiredVersion="3.0.0.0"; Provider = 'PSGallery'; },
+                @{ Name = 'xComputerManagement'; RequiredVersion = '4.1.0.0'; Provider = 'PSGallery'; },
+                @{ Name = 'xNetworking'; RequiredVersion = '5.7.0.0'; Provider = 'PSGallery'; },
+                @{ Name = 'xDhcpServer'; RequiredVersion = '2.0.0.0'; Provider = 'PSGallery';  },
+                @{ Name = 'xWindowsUpdate' ; RequiredVersion = '2.8.0.0'; Provider = 'PSGallery';},
+                @{ Name = 'xPSDesiredStateConfiguration'; RequiredVersion = '8.9.0.0'; },
+                @{ Name = 'xPendingReboot'; RequiredVersion = '0.4.0.0'; Provider = 'PSGallery';},
+                @{ Name = 'xADCSDeployment'; RequiredVersion = '1.4.0.0'; Provider = 'PSGallery';},
+                @{ Name = 'xDnsServer';RequiredVersion = "1.14.0.0";Provider = 'PSGallery';},
+                @{ Name = 'xWebAdministration';RequiredVersion = '2.7.0.0';Provider = 'PSGallery'}
 
             );
             Resource = @(
-                @{                    
+                @{
                     Id = 'Win10RSAT'
                     Filename = 'WindowsTH-RSAT_WS2016-x64.msu'
                     Uri = 'https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS2016-x64.msu'
-                    Expand = $false                    
+                    Expand = $false
                     #DestinationPath = '\software' # Default is resources folder
                 }
             );

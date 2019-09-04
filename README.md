@@ -1,6 +1,6 @@
 # PowerShellLab
 
-These files are used for configuration with the [Autolab](https://github.com/theJasonHelmick/PS-AutoLab-Env) project. The intent is to setup a small domain environment for testing and teaching Windows PowerShell 5.1.
+These files are used for configuration with the [PSAutolab](https://github.com/pluralsight/PS-AutoLab-Env) project. The intent is to setup a small domain environment for testing and teaching Windows PowerShell 5.1.
 
 ## Instructions
 

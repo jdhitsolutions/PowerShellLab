@@ -1,18 +1,18 @@
-#requires -version 5.0
+#requires -version 5.1
 
 #Download and install the latest 64bit version of VSCode
 
-[CmdletBinding(DefaultParameterSetName="VM")]
+[CmdletBinding(DefaultParameterSetName = "VM")]
 Param(
-    [Parameter(Mandatory,ParameterSetName='VM')]
+    [Parameter(Mandatory, ParameterSetName = 'VM')]
     #specify the name of a VM
     [string]$VMName,
-    [Parameter(Mandatory,ParameterSetName='VM')]
+    [Parameter(Mandatory, ParameterSetName = 'VM')]
     #Specify the user credential
     [pscredential]$Credential,
-    [Parameter(Mandatory,ParameterSetName="session")]
+    [Parameter(Mandatory, ParameterSetName = "session")]
     #specify an existing PSSession object
-    [System.Management.Automation.Runspaces.PSSession]$Session    
+    [System.Management.Automation.Runspaces.PSSession]$Session
 )
 
 #download the setup file on the host and then copy to VM to avoid strange name resolution problems
@@ -41,10 +41,10 @@ Try {
     #copy the file to the VM
     copy-item -Path $out -Destination C:\ -ToSession $Session
 
-    $sb = {   
+    $sb = {
         $file = 'C:\VSCodeSetup-x64.exe'
         Write-Host "[$($env:computername)] Installing VSCode" -foreground magenta
-$loadInf = '@
+        $loadInf = '@
 [Setup]
 Lang=english
 Dir=C:\Program Files\Microsoft VS Code
@@ -54,7 +54,7 @@ Tasks=desktopicon,addcontextmenufiles,addcontextmenufolders,addtopath
 @'
         $infPath = "${env:TEMP}\load.inf"
         $loadInf | Out-File $infPath
-        
+
         Start-Process -FilePath $file -ArgumentList "/VERYSILENT /LOADINF=${infPath}" -Wait
         Write-Host "[$($env:computername)] Finished Installing VSCode" -foreground magenta
     } #close scriptblock

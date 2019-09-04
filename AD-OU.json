@@ -26,5 +26,9 @@
     {
         "Name":  "Servers",
         "Description":  "company servers"
+    },
+    {
+        "Name": "Employees",
+        "Description": "company employees"
     }
 ]

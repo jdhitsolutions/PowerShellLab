@@ -1,4 +1,4 @@
-﻿#requires -version 5.0
+﻿#requires -version 5.1
 
 <#
 Download Sysinternals tools from web to a local folder in a VM
@@ -22,7 +22,7 @@ Param(
     [pscredential]$Credential,
     [Parameter(Mandatory,ParameterSetName="session")]
     #specify an existing PSSession object
-    [System.Management.Automation.Runspaces.PSSession[]]$Session    
+    [System.Management.Automation.Runspaces.PSSession[]]$Session
 )
 
 Try {
@@ -52,10 +52,10 @@ Try {
             #>
             $Stopped = $False
         }
-        
+
         Write-Host "Updating Sysinternals tools from \\live.sysinternals.com\tools to $destination" -ForegroundColor Cyan
 
-        dir -path \\live.sysinternals.com\tools -file | Copy-Item -Destination $Destination -PassThru
+        Get-ChildItem -path \\live.sysinternals.com\tools -file | Copy-Item -Destination $Destination -PassThru
 
         <#
         alternative but this might still copy files that haven't

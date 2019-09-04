@@ -1,11 +1,11 @@
-﻿#requires -version 5.0
+﻿#requires -version 5.1
 
 #test if VM setup is complete
 
 #The password will be passed by the control script WaitforVM.ps1
 #You can manually set it while developing this Pester test
 $LabData = Import-PowerShellDataFile -Path .\*.psd1
-$Secure = ConvertTo-SecureString -String "$($labdata.allnodes.labpassword)" -AsPlainText -Force 
+$Secure = ConvertTo-SecureString -String "$($labdata.allnodes.labpassword)" -AsPlainText -Force
 $Domain = "company"
 $cred = New-Object PSCredential "$Domain\Administrator", $Secure
 $wgcred = New-Object PSCredential  "administrator", $secure
@@ -13,7 +13,7 @@ $wgcred = New-Object PSCredential  "administrator", $secure
 Describe DOM1 {
 
     $dc = New-PSSession -VMName DOM1 -Credential $cred -ErrorAction SilentlyContinue
-    #set error action preference to suppress all error messsages
+    #set error action preference to suppress all error messsages which would be normal while configurations are converging
     if ($dc) {
         Invoke-Command { $errorActionPreference = 'silentlyContinue'} -session $dc
     }
@@ -77,15 +77,15 @@ Describe DOM1 {
     $computer = Invoke-Command { Get-ADComputer -filter * -ErrorAction SilentlyContinue} -session $dc
     It "[DOM1] Should have a computer account for WIN10" {
         $computer.name -contains "Win10" | Should Be "True"
-    } 
+    }
 
     It "[DOM1] Should have a computer account for SRV1" {
         $computer.name -contains "SRV1" | Should Be "True"
-    } 
+    }
 
     It "[DOM1] Should have a computer account for SRV2" {
         $computer.name -contains "SRV2" | Should Be "True"
-    } 
+    }
 
     $rec = Invoke-command {Resolve-DNSName Srv3.company.pri} -session $DC
     It "[DOM1] Should have a DNS record for SRV3.COMPANY.PRI" {
@@ -106,8 +106,8 @@ Describe SRV1 {
         $i.ipv4Address | should be '192.168.3.50'
     }
     $dns = Invoke-Command {Get-DnsClientServerAddress -InterfaceAlias ethernet -AddressFamily IPv4} -session $SRV1
-    It "[SRV1] Should have a DNS server configuration of 192.168.3.10" {                        
-        $dns.ServerAddresses -contains '192.168.3.10' | Should Be "True"           
+    It "[SRV1] Should have a DNS server configuration of 192.168.3.10" {
+        $dns.ServerAddresses -contains '192.168.3.10' | Should Be "True"
     }
 } #SRV1
 
@@ -117,14 +117,14 @@ Describe SRV2 {
         $test = Invoke-Command {Get-Ciminstance -ClassName win32_computersystem -property domain} -session $SRV2
         $test.domain | Should Be "company.pri"
     }
-    
+
     It "[SRV2] Should have an IP address of 192.168.3.51" {
         $i = Invoke-command -ScriptBlock { Get-NetIPAddress -interfacealias 'Ethernet' -AddressFamily IPv4} -Session $SRV2
         $i.ipv4Address | should be '192.168.3.51'
     }
     $dns = Invoke-Command {Get-DnsClientServerAddress -InterfaceAlias ethernet -AddressFamily IPv4} -session $SRV2
-    It "[SRV2] Should have a DNS server configuration of 192.168.3.10" {                        
-        $dns.ServerAddresses -contains '192.168.3.10' | Should Be "True"           
+    It "[SRV2] Should have a DNS server configuration of 192.168.3.10" {
+        $dns.ServerAddresses -contains '192.168.3.10' | Should Be "True"
     }
 
     It "[SRV2] Should have the Web-Server feature installed" {
@@ -146,7 +146,7 @@ Describe SRV2 {
 
 Describe SRV3 {
 
-    It "[SRV3] Should respond to WSMan requests" { 
+    It "[SRV3] Should respond to WSMan requests" {
         $script:sess = New-PSSession -VMName SRV3 -Credential $wgCred -ErrorAction Stop
         $script:sess.Computername | Should Be 'SRV3'
     }
@@ -178,8 +178,8 @@ Describe Win10 {
     }
 
     $dns = Invoke-Command {Get-DnsClientServerAddress -InterfaceAlias ethernet -AddressFamily IPv4} -session $cl
-    It "[Win10] Should have a DNS server configuration of 192.168.3.10" {                        
-        $dns.ServerAddresses -contains '192.168.3.10' | Should Be "True"           
+    It "[Win10] Should have a DNS server configuration of 192.168.3.10" {
+        $dns.ServerAddresses -contains '192.168.3.10' | Should Be "True"
     }
 
 } #client

@@ -1,16 +1,17 @@
-﻿
-[CmdletBinding(DefaultParameterSetName="VM")]
+﻿#requires -version 5.1
+
+[CmdletBinding(DefaultParameterSetName = "VM")]
 Param(
-    [Parameter(Mandatory,ParameterSetName='VM')]
+    [Parameter(Mandatory, ParameterSetName = 'VM')]
     #specify the name of a VM
     [string]$VMName,
-    [Parameter(Mandatory,ParameterSetName='VM')]
+    [Parameter(Mandatory, ParameterSetName = 'VM')]
     #Specify the user credential
     [pscredential]$Credential,
-    [Parameter(Mandatory,ParameterSetName="session")]
+    [Parameter(Mandatory, ParameterSetName = "session")]
     #specify an existing PSSession object
     [System.Management.Automation.Runspaces.PSSession[]]$Session,
-    [switch]$Install    
+    [switch]$Install
 )
 
 Try {
@@ -21,7 +22,7 @@ Try {
     }
 
     $sb = {
-    Param([switch]$Install)
+        Param([switch]$Install)
 
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -39,22 +40,22 @@ Try {
 
         #split out the filename
         $filename = split-path $dl -leaf
-        
+
         #construct a filepath for the download
         $out = Join-Path -Path $path -ChildPath $filename
         Write-Host "Downloading $out from $dl" -ForegroundColor cyan
 
         #download the file
         Try {
-        Invoke-WebRequest -uri $dl -OutFile $out -UseBasicParsing -DisableKeepAlive -ErrorAction Stop
+            Invoke-WebRequest -uri $dl -OutFile $out -UseBasicParsing -DisableKeepAlive -ErrorAction Stop
 
-        if ($install) {
-            &$out /verysilent /norestart /suppressmessageboxes
-        }
-        else {
-            #check it out
-            Get-Item $out
-        }
+            if ($install) {
+                &$out /verysilent /norestart /suppressmessageboxes
+            }
+            else {
+                #check it out
+                Get-Item $out
+            }
         }
         Catch {
             Throw $_
