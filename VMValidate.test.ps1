@@ -2,17 +2,18 @@
 
 #test if VM setup is complete
 
-#The password will be passed by the control script WaitforVM.ps1
-#You can manually set it while developing this Pester test
 $LabData = Import-PowerShellDataFile -Path .\*.psd1
 $Secure = ConvertTo-SecureString -String "$($labdata.allnodes.labpassword)" -AsPlainText -Force
 $Domain = "company"
 $cred = New-Object PSCredential "$Domain\Administrator", $Secure
 $wgcred = New-Object PSCredential  "administrator", $secure
 
+#define an array to hold all of the PSSessions
+$all = @()
 Describe DOM1 {
 
     $dc = New-PSSession -VMName DOM1 -Credential $cred -ErrorAction SilentlyContinue
+    $all+=$dc
     #set error action preference to suppress all error messsages which would be normal while configurations are converging
     if ($dc) {
         Invoke-Command { $errorActionPreference = 'silentlyContinue'} -session $dc
@@ -96,6 +97,7 @@ Describe DOM1 {
 
 Describe SRV1 {
     $SRV1 = New-PSSession -VMName SRV1 -Credential $cred -ErrorAction SilentlyContinue
+    $all+=$srv1
     It "[SRV1] Should belong to the COMPANY domain" {
         $test = Invoke-Command {Get-Ciminstance -ClassName win32_computersystem -property domain} -session $SRV1
         $test.domain | Should Be "company.pri"
@@ -113,6 +115,7 @@ Describe SRV1 {
 
 Describe SRV2 {
     $SRV2 = New-PSSession -VMName SRV2 -Credential $cred -ErrorAction SilentlyContinue
+    $all+=$srv2
     It "[SRV2] Should belong to the COMPANY domain" {
         $test = Invoke-Command {Get-Ciminstance -ClassName win32_computersystem -property domain} -session $SRV2
         $test.domain | Should Be "company.pri"
@@ -148,6 +151,7 @@ Describe SRV3 {
 
     It "[SRV3] Should respond to WSMan requests" {
         $script:sess = New-PSSession -VMName SRV3 -Credential $wgCred -ErrorAction Stop
+        $all+=$script:sess
         $script:sess.Computername | Should Be 'SRV3'
     }
 
@@ -167,6 +171,7 @@ Describe SRV3 {
 Describe Win10 {
 
     $cl = New-PSSession -VMName Win10 -Credential $cred -ErrorAction SilentlyContinue
+    $all+=$cl
     It "[WIN10] Should belong to the COMPANY domain" {
         $test = Invoke-Command {Get-Ciminstance -ClassName win32_computersystem -property domain} -session $cl
         $test.domain | Should Be "company.pri"
@@ -184,4 +189,4 @@ Describe Win10 {
 
 } #client
 
-Get-PSSession | Remove-PSSession
+$all | Remove-PSSession

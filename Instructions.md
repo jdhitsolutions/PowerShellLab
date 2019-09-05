@@ -2,13 +2,13 @@
 
 This lab builds the following:
 
-* 1 DC with users, groups and OU's - GUI
+* 1 Windows Server 2016 domain controller with users, groups and OU's - GUI
 * 1 DHCP server on the DOM1
-* 2 Domain joined servers (SRV1 and SRV2)
-* 1 workgroup based server (SRV3)
+* 2 Domain joined servers (SRV1 and SRV2) running Windows Server 2016 Core
+* 1 workgroup based server (SRV3) running Windows Server 2019 Core
 * 1 Domain joined Windows 10 Client with RSAT tools installed
 
-## To get started:
+## To get started
 
 To run the full lab setup, which includes Setup-Lab, Run-Lab, Enable-Internet, and Validate-Lab. You should run all commands from the directory with the MOF and psd1 files.
 
@@ -38,7 +38,7 @@ PS> Enable-Internet
 
 To validate when configurations have converged:
 
-```powrshell
+```powershell
 PS> Validate-Lab
 ```
 
