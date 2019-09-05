@@ -121,7 +121,7 @@ demonstrations and would need to be modified for your environment.
 
 
             #>
-        }
+        },
 
 <#    Available Roles for computers
         DC = Domain Controller
@@ -146,7 +146,7 @@ demonstrations and would need to be modified for your environment.
                     # This must be set to handle larger .mof files
                     Set-Item -path wsman:\localhost\maxenvelopesize -value 1000
 '@
-        }
+        },
 
         @{
             NodeName = 'SRV1'
@@ -156,7 +156,7 @@ demonstrations and would need to be modified for your environment.
 	        Lability_BootOrder = 20
             Lability_timeZone = 'US Mountain Standard Time' #[System.TimeZoneInfo]::GetSystemTimeZones()
             Lability_Media = '2016_x64_Standard_Core_EN_Eval'
-        }
+        },
 
         @{
             NodeName = 'SRV2'
@@ -166,16 +166,16 @@ demonstrations and would need to be modified for your environment.
 	        Lability_BootOrder = 20
             Lability_timeZone = 'US Mountain Standard Time' #[System.TimeZoneInfo]::GetSystemTimeZones()
             Lability_Media = '2016_x64_Standard_Core_EN_Eval'
-        }
+        },
 
        @{
             NodeName = 'SRV3'
             IPAddress = '192.168.3.60'
             Lability_BootOrder = 20
-            Lability_Media = ' 2019_x64_Standard_EN_Core_Eval'
+            Lability_Media = '2019_x64_Standard_EN_Core_Eval'
             Lability_ProcessorCount = 1
             Lability_StartupMemory = 1GB
-        }
+        },
 
         @{
             NodeName = 'WIN10'
