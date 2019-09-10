@@ -2,9 +2,9 @@
 
 These files are used for configuration with the [PSAutolab](https://github.com/pluralsight/PS-AutoLab-Env) project. The intent is to setup a small domain environment for testing and teaching Windows PowerShell 5.1.
 
-If you are using the newer PSAutolab project, version 4.0.0 or later, this configuration is already included.
+If you are using the newer PSAutolab project, version 4.0.0 or later, this configuration is already included. You should no longer need to install this. Go to the [PSAutolab](https://github.com/pluralsight/PS-AutoLab-Env) and read the README.md for instructions.
 
-## Instructions
+## Legacy Instructions
 
 To use the scripts and configurations, download the [current release ](https://github.com/jdhitsolutions/PowerShellLab/archive/0.10.0.zip). Extract the contents of the zip file folder to your Autolab Configurations directory. You should end up with something like C:\Autolab\Configurations\PowerShellLab which contains the files from this repository.
 
@@ -63,4 +63,4 @@ All servers run an evaluation version of Windows Server 2016 Core:
 - The PostSetup folder contains a number of optional scripts you might want to run after the Autolab setup is complete. It has a separate [README](./PostSetup/README.md) file.
 - To connect to a virtual machine, in a PowerShell prompt you can use the `vmconnect` command: `vmconnect localhost win10` where you specify the name of the Hyper-V host (your local machine) and the name of the virtual machine.
 
-*Last updated 4 September 2019*
+*Last updated 10 September 2019*
