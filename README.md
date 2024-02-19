@@ -1,8 +1,16 @@
 # PowerShellLab
 
-These files are used for configuration with the [PSAutolab](https://github.com/pluralsight/PS-AutoLab-Env) project. The intent is to setup a small domain environment for testing and teaching Windows PowerShell 5.1.
+## Deprecated
 
-If you are using the newer PSAutolab project, version 4.0.0 or later, this configuration is already included. You should no longer need to install this. Go to the [PSAutolab](https://github.com/pluralsight/PS-AutoLab-Env) and read the README.md for instructions.
+This lab configuration is no longer maintained in this repository. They are part of the [PSAutolab](https://github.com/pluralsight/PS-AutoLab-Env) module. It is recommended you look at the README file in that repository.
+
+You can install the PSAutolab module from the PowerShell Gallery.
+
+```powershell
+Install-Module -Name PSAutolab
+```
+
+This repository is maintained for historical purposes and should not be used for new installations.
 
 ## Legacy Instructions
 
